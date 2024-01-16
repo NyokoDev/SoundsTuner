@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BC7C96B9-648C-4C93-9230-A5C6B39CF4EE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>POAIDBOX</RootNamespace>
+    <AssemblyName>SoundsTuner</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="CitiesHarmony.API, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\CitiesHarmony.API.2.2.0\lib\net35\CitiesHarmony.API.dll</HintPath>
+    </Reference>
+    <Reference Include="CitiesHarmony.Harmony, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\CitiesHarmony.Harmony.2.2.2\lib\net35\CitiesHarmony.Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="ColossalManaged">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\ColossalManaged.dll</HintPath>
+    </Reference>
+    <Reference Include="ICities">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\ICities.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="YamlDotNet, Version=13.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
+      <HintPath>packages\YamlDotNet.13.7.1\lib\net35\YamlDotNet.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\Aid.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Configuration\Config.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Configuration\ConfigMigratorBase.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Configuration\IConfigMigrator.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Configuration\VersionedConfig.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Defs\GameObjectDefs.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Defs\UITemplateDefs.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\IUserModStateChangeEvents.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Logger.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Proxies\IO\DataLocationProxy.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Proxies\IO\IDataLocationInteractor.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Proxies\Plugins\IPluginInfoInteractor.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Proxies\Plugins\IPluginManagerInteractor.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Proxies\Plugins\PluginInfoProxy.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Proxies\Plugins\PluginManagerProxy.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\SerializableDictionary.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\UI\ConfigPanelBase.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\UI\Extensions\UIHelperBaseExtensions.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\UI\Extensions\UITabstripExtensions.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\UI\Window.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\UserModBase.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Utils\AtlasUtils.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Utils\DetourUtils.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Utils\DlcUtils.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Utils\FileUtils.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Utils\PluginUtils.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Utils\ReflectionUtils.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Compatibility\SoundDuplicator.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Configuration.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Defs\UITemplateDefs.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Detour\CustomPlayClickSound.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Migration\ConfigurationMigrator.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Migration\ConfigurationV0.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Migration\ConfigurationV1.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Migration\ConfigurationV2.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Migration\ConfigurationV3.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Migration\ConfigurationV4.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Mod.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\SoundPack\Migration\SoundPacksFileMigrator.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\SoundPack\Migration\SoundPacksFileV1.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\SoundPack\SoundPacksFile.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\SoundPack\SoundPacksManager.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Sounds\Attributes\SoundAttribute.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Sounds\Attributes\SoundCategoryAttribute.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Sounds\Attributes\SoundVolumeAttribute.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Sounds\Exceptions\SoundBackupException.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Sounds\Exceptions\SoundPatchException.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Sounds\ISound.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Sounds\SoundBase.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Sounds\SoundContainer.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Sounds\SoundManager.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Sounds\Sounds.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Sounds\Utils\SoundPatchUtils.cs" />
+    <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\UI\ModOptionsPanel.cs" />
+    <Compile Include="UI\Tabs\LegacyTab.cs" />
+    <Compile Include="Base\Loading.cs" />
+    <Compile Include="UI\Tabs\GeneralOptions.cs" />
+    <Compile Include="Base\Mod.cs" />
+    <Compile Include="UI\Tabs\UpdatedTab.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Structure\CompletedNotification.cs" />
+    <Compile Include="Structure\Mechanism.cs" />
+    <Compile Include="Structure\ModUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CSL Ambient Sounds Tuner.csproj" />
+    <None Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Debug\CSL Ambient Sounds Tuner.csproj.AssemblyReference.cache" />
+    <None Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Debug\CSL Ambient Sounds Tuner.csproj.CopyComplete" />
+    <None Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Debug\CSL Ambient Sounds Tuner.csproj.CoreCompileInputs.cache" />
+    <None Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
+    <None Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Release\CSL Ambient Sounds Tuner.csproj.AssemblyReference.cache" />
+    <None Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Release\CSL Ambient Sounds Tuner.csproj.CopyComplete" />
+    <None Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Release\CSL Ambient Sounds Tuner.csproj.CoreCompileInputs.cache" />
+    <None Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Release\DesignTimeResolveAssemblyReferences.cache" />
+    <None Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Release\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="Base\LegacyCode\CSL Ambient Sounds Tuner\packages.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Debug\Assembly-CSharp-firstpass.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Debug\Assembly-CSharp.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Debug\ASTNY.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Debug\ASTNY.pdb" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Debug\ColossalManaged.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Debug\ICities.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Debug\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Debug\PopsApiWrapper.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Debug\UnityEngine.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Debug\YamlDotNet.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Debug\YamlDotNet.xml" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Release\Assembly-CSharp-firstpass.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Release\Assembly-CSharp.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Release\ASTNY.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Release\ASTNY.pdb" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Release\ColossalManaged.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Release\ICities.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Release\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Release\PopsApiWrapper.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Release\UnityEngine.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Release\YamlDotNet.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Release\YamlDotNet.xml" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Debug\ASTNY.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Debug\ASTNY.pdb" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Debug\CSL Ambient Sounds Tuner.csproj.FileListAbsolute.txt" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Release\ASTNY.dll" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Release\ASTNY.pdb" />
+    <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Release\CSL Ambient Sounds Tuner.csproj.FileListAbsolute.txt" />
+    <Content Include="Resources\bck.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Debug\TempPE\" />
+    <Folder Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Release\TempPE\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "C:\Users\Nyoko\source\repos\SoundsTuner\POAIDBOX\bin\Release\SoundsTuner.dll" "C:\Users\Nyoko\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\SoundsTuner\" /Y
+xcopy "C:\Users\Nyoko\source\repos\SoundsTuner\POAIDBOX\bin\Release\CitiesHarmony.API.dll" "C:\Users\Nyoko\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\SoundsTuner\" /Y
+</PostBuildEvent>
+  </PropertyGroup>
+</Project>
