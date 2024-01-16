@@ -54,7 +54,7 @@ namespace POAIDBOX
        
             dropdown.items = soundPacks;
             // Assuming dropdown is an instance of your dropdown control
-            dropdown.eventSelectedIndexChanged += (c, index) => LegacyPanel.SoundPackPresetDropDownSelectionChanged(index);
+     
 
 
             UIButton supportbutton = UIButtons.AddSmallerButton(panel, Margin, currentY, "Support");

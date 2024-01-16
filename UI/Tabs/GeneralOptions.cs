@@ -34,15 +34,8 @@ namespace POAIDBOX
     protected override void Setup()
         {
             m_BackgroundSprite = "UnlockingPanel";
-
-            UISprite image2Sprite = this.AddUIComponent<UISprite>();
-            image2Sprite.height = 1000f;
-            image2Sprite.relativePosition = new Vector3(0f, -50f);
-            image2Sprite.width = 1000f;
-            image2Sprite.atlas = UITextures.LoadSingleSpriteAtlas("..\\Resources\\bck");
-            image2Sprite.spriteName = "normal";
-            image2Sprite.zOrder = 1;
             Background = true;
+           
 
 
             Tabstrip();
