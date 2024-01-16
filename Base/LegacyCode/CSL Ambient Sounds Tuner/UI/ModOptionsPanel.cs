@@ -29,9 +29,9 @@ namespace AmbientSoundsTuner2.UI
     /// <summary>
     /// A mod options panel.
     /// </summary>
-    public class ModOptionsPanel : ConfigPanelBase
+    public class ModOptionsPanel
     {
-        public ModOptionsPanel(UIHelper helper) : base(helper) { }
+
 
         public string[] soundPacks;
         public bool isChangingSoundPackPreset = false;
@@ -43,11 +43,11 @@ namespace AmbientSoundsTuner2.UI
         private UIHelper soundSettingsGroup;
         private UILabel versionInfoLabel;
 
-        protected override void PopulateUI()
+        public void PopulateUI()
         {
 
             // Create global options
-            this.modSettingsGroup = this.RootHelper.AddGroup2("Mod settings");
+
             this.soundPacks = new[] { "Default", "Custom" }.Union(SoundPacksManager.instance.SoundPacks.Values.OrderBy(p => p.Name).Select(p => p.Name)).ToArray();
             this.soundPackPresetDropDown = (UIDropDown)this.modSettingsGroup.AddDropdown("Sound pack preset", this.soundPacks, 0, this.SoundPackPresetDropDownSelectionChanged);
             this.soundPackPresetDropDown.selectedValue = Mod.Settings.SoundPackPreset;
@@ -57,23 +57,19 @@ namespace AmbientSoundsTuner2.UI
 
             });
 
-            UIButton supportbutton = UIButtons.AddSmallerButton(this.RootPanel,0f, 0f, "Support");
-  
-            supportbutton.eventClicked += (sender, args) =>
-            {
-                Process.Start("https://discord.gg/gdhyhfcj7A");
-            };
+
+
 
             // Create tab strip
-            this.soundSettingsGroup = this.RootHelper.AddGroup2("Sound settings");
+
 
             // Create tabs
             this.PopulateTabContainer();
 
             // Add mod information
             string versionText = "Test";
-            
-            this.versionInfoLabel = this.RootPanel.AddUIComponent<UILabel>();
+
+
             this.versionInfoLabel.isVisible = true;
             this.versionInfoLabel.autoSize = true;
             this.versionInfoLabel.textScale = 0.8f;
@@ -82,7 +78,6 @@ namespace AmbientSoundsTuner2.UI
 
         protected void PopulateTabContainer()
         {
-            // Parse all the available sounds first
             var sliders = new Dictionary<string, Dictionary<string, List<ISound>>>();
             foreach (var sound in SoundManager.instance.Sounds.Values)
             {
@@ -96,24 +91,14 @@ namespace AmbientSoundsTuner2.UI
                 sliders[sound.CategoryName][sound.SubCategoryName].Add(sound);
             }
 
-            // Populate the tab container
-            foreach (var tabGroup in sliders)
+
             {
-                UIHelper tabHelper = this.RootHelper;/*.AddScrollingTab(tabstrip, buttonWidth, tabGroup.Key);*/ //TODO(earalov): fix!
-                foreach (var group in tabGroup.Value)
-                {
-                    UIHelperBase groupHelper = tabHelper.AddGroup(group.Key);
-                    //TODO(earalov): fix!
-                    //                    UIHelper groupHelper = tabHelper.AddGroup2(group.Key);
-                    //                    ((UIComponent)groupHelper.self).parent.width -= 10; // Fix some overlap with the scrollbar
-                    //                    ((UIComponent)groupHelper.self).width -= 10; // Fix some overlap with the scrollbar
-                    foreach (var sound in group.Value)
-                    {
-                        this.CreateSoundSlider(groupHelper, sound);
-                    }
-                }
+
             }
         }
+    
+           
+
 
         protected void CreateSoundSlider(UIHelperBase helper, ISound sound)
         {

@@ -119,10 +119,10 @@
     <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Sounds\Sounds.cs" />
     <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Sounds\Utils\SoundPatchUtils.cs" />
     <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\UI\ModOptionsPanel.cs" />
-    <Compile Include="UI\Tabs\LegacyTab.cs" />
     <Compile Include="Base\Loading.cs" />
     <Compile Include="UI\Tabs\GeneralOptions.cs" />
     <Compile Include="Base\Mod.cs" />
+    <Compile Include="UI\Tabs\LegacyTab.cs" />
     <Compile Include="UI\Tabs\UpdatedTab.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structure\CompletedNotification.cs" />
@@ -179,6 +179,7 @@
     <Folder Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Debug\TempPE\" />
     <Folder Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Release\TempPE\" />
   </ItemGroup>
+  <Import Project="..\..\AlgernonCommons\AlgernonCommonsPatchingShared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "C:\Users\Nyoko\source\repos\SoundsTuner\POAIDBOX\bin\Release\SoundsTuner.dll" "C:\Users\Nyoko\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\SoundsTuner\" /Y

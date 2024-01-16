@@ -9,5 +9,6 @@
         /// The UI template ID of the options scroll panel.
         /// </summary>
         public const string ID_OPTIONS_SCROLL_PANEL_TEMPLATE = "OptionsScrollPanelTemplate";
+        public const string ID_OPTIONS_DROPDOWN_TEMPLATE = "OptionsDropdownTemplate";
     }
 }

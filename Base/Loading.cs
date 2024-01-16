@@ -1,12 +1,16 @@
 ﻿using AlgernonCommons.Notifications;
 using AlgernonCommons.Patching;
+using AlgernonCommons.UI;
+using AmbientSoundsTuner2;
 using AmbientSoundsTuner2.SoundPack;
+using AmbientSoundsTuner2.UI;
 using ICities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace POAIDBOX
 {
@@ -28,9 +32,9 @@ namespace POAIDBOX
             base.OnLevelUnloading();
         }
 
-       
-    
 
+
+        SoundPacksManager SoundPacksManager;
         private UnityEngine.GameObject _gameObject;
         /// <summary>
         /// Performs any actions upon successful level loading completion.
@@ -39,8 +43,8 @@ namespace POAIDBOX
         protected override void LoadedActions(LoadMode mode)
         {
             base.LoadedActions(mode);
-            SoundPacksManager.instance.InitSoundPacks();
-            // Create logic instance.
+            UpdatedTab.PopulateDropdown();
+            SoundPacksManager.InitSoundPacks();
 
 
 

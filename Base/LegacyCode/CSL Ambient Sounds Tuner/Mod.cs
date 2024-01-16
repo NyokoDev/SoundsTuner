@@ -60,25 +60,7 @@ namespace AmbientSoundsTuner2
 
         #region IUserModSettingsUI
 
-        public void OnSettingsUI(UIHelperBase helper)
-        {
- 
-                Load();
-            PatchUISounds();
-
-            // Do regular settings UI stuff
-            UIHelper uiHelper = helper as UIHelper;
-            if (uiHelper != null)
-            {
-                OptionsPanel = new ModOptionsPanel(uiHelper);
-                OptionsPanel.PerformLayout();
-          
-            }
-            else
-            {
-              
-            }
-        }
+   
 
         #endregion
 

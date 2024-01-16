@@ -8,143 +8,84 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using YamlDotNet.Core.Tokens;
 
 namespace POAIDBOX
 {
     public sealed class UpdatedTab
     {
-        Mod Mod;
-        private AutoTabstrip tabStrip;
-        private int tabindex;
-        private int v;
-        private const float LabelWidth = 40f;
+
         float currentY = Margin;
         private const float Margin = 5f;
-        private string[] soundPacks;
+        public static string[] soundPacks = new[] { "Default", "Custom" }.Union(SoundPacksManager.instance.SoundPacks.Values.OrderBy(p => p.Name).Select(p => p.Name)).ToArray();
         ModOptionsPanel LegacyPanel;
-        UIDropDown dropdown;
+        public static UIDropDown dropdown;
 
 
         /// <summary>
         /// Creates a tabstrip to refresh the sound packs.
         /// </summary>
         /// <param name="tabStrip"></param>
-        /// <param name="v"></param>
-        internal UpdatedTab(AutoTabstrip tabStrip, int tabindex)
+        /// <param name="tabIndex"></param>
+        internal UpdatedTab(UITabstrip tabStrip, int tabIndex)
         {
-            UIPanel panel = UITabstrips.AddTextTab(tabStrip, "Test2", tabindex, out UIButton _,  250f) ;
-     
+            if (tabStrip == null)
+            {
+                UnityEngine.Debug.Log("tabStrip is null.");
+                return;
+            }
 
+            UIPanel panel = UITabstrips.AddTextTab(tabStrip, "Updated", tabIndex, out UIButton _, autoLayout: true);
+            if (panel == null)
+            {
+                UnityEngine.Debug.Log("Failed to create panel.");
+                return;
+            }
 
-          
-            
-            dropdown = UIDropDowns.AddLabelledDropDown(panel, Margin, currentY, "Sound Preset", 220f);
+            panel.autoLayoutDirection = LayoutDirection.Vertical;
+
+            dropdown = UIDropDowns.AddLabelledDropDown(panel, Margin, currentY, "Sound Preset", panel.width);
+            if (dropdown == null)
+            {
+                UnityEngine.Debug.Log("Failed to create dropdown.");
+                return;
+            }
+
+       
             dropdown.items = soundPacks;
-            dropdown.selectedValue = Mod.Settings.SoundPackPreset;
-            dropdown.eventSelectedIndexChanged += OnSelectedIndexChanged;
-            currentY += 31f;
+            // Assuming dropdown is an instance of your dropdown control
+            dropdown.eventSelectedIndexChanged += (c, index) => LegacyPanel.SoundPackPresetDropDownSelectionChanged(index);
 
 
-            UIButton supportbutton = UIButtons.AddSmallerButton(panel, LabelWidth, currentY, "Support");
-            currentY += 50f;
+            UIButton supportbutton = UIButtons.AddSmallerButton(panel, Margin, currentY, "Support");
+            currentY += 30f;
+            if (supportbutton == null)
+            {
+                UnityEngine.Debug.Log("Failed to create support button.");
+                return;
+            }
+
             supportbutton.eventClicked += (sender, args) =>
             {
                 Process.Start("https://discord.gg/gdhyhfcj7A");
             };
 
-
-
-
-
-            UILabel version = UILabels.AddLabel(panel, LabelWidth, currentY, Assembly.GetExecutingAssembly().GetName().Version.ToString(), textScale: 0.7f, alignment: UIHorizontalAlignment.Center);
-
-
-
-
-            this.tabStrip = tabStrip;
-            this.tabindex = 1;
-
+            UILabel version = UILabels.AddLabel(panel, Margin, currentY, Assembly.GetExecutingAssembly().GetName().Version.ToString(), textScale: 0.7f, alignment: UIHorizontalAlignment.Center);
+            if (version == null)
+            {
+                UnityEngine.Debug.Log("Failed to create version label.");
+            }
         }
 
-        /// <summary>
-        /// Changes the audio preset on dropdown change.
-        /// </summary>
-        /// <param name="component"></param>
-        /// <param name="value"></param>
-        public void OnSelectedIndexChanged(UIComponent component, int value)
+       
+        public static void PopulateDropdown()
         {
-            LegacyPanel.SoundPackPresetDropDownSelectionChanged(value);
-        }
-
-        /// <summary>
-        /// Legacy method to change the audio preset.
-        /// </summary>
-        /// <param name="value"></param>
-        public void SoundPackPresetDropDownSelectionChanged(int value)
-        {
-            if (value == 0)
-          
             {
-                // Default
-    
-                foreach (UIDropDown dropDown in LegacyPanel.soundSelections.Values)
-                    dropDown.selectedIndex = 0;
+                dropdown.selectedValue = Mod.Settings.SoundPackPreset;
             }
-            else if (value == 1)
-            {
-                // Custom, don't do anything here
-            }
-            else if (value >= 2)
-            {
-                // Sound pack
-                string soundPackName = this.soundPacks[value];
-                SoundPacksFileV1.SoundPack soundPack = null;
-              
-
-                if (SoundPacksManager.instance.SoundPacks.TryGetValue(soundPackName, out soundPack))
-                {
-                    foreach (var dropDown in LegacyPanel.soundSelections)
-                    {
-                        var prefix = dropDown.Key.Substring(0, dropDown.Key.IndexOf('.'));
-                        var id = dropDown.Key.Substring(dropDown.Key.IndexOf('.') + 1);
-                        SoundPacksFileV1.Audio[] audios = null;
-                        switch (prefix)
-                        {
-                            case "Ambient":
-                                audios = soundPack.Ambients;
-                                break;
-                            case "AmbientNight":
-                                audios = soundPack.AmbientsNight;
-                                break;
-                            case "Animal":
-                                audios = soundPack.Animals;
-                                break;
-                            case "Building":
-                                audios = soundPack.Buildings;
-                                break;
-                            case "Vehicle":
-                                audios = soundPack.Vehicles;
-                                break;
-                            case "Misc":
-                                audios = soundPack.Miscs;
-                                break;
-                        }
-                        if (audios != null)
-                        {
-                            SoundPacksFileV1.Audio audio = audios.FirstOrDefault(a => a.Type == id);
-                            if (audio != null)
-                            {
-                               
-                                dropDown.Value.selectedValue = audio.Name;
-                            }
-                        }
-                    }
-                }
-            }
-
-            Mod.Settings.SoundPackPreset = dropdown.selectedValue;
-
         }
     }
 }
 
+
+   

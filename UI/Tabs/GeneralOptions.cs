@@ -10,30 +10,29 @@ using UnityEngine;
 using System.Diagnostics;
 using POAIDBOX.Structure;
 using System.Diagnostics.Eventing.Reader;
+using POAIDBOX;
 
 namespace POAIDBOX
 {
+
     /// <summary>
     /// The mod's settings options panel.
     /// </summary>
     public sealed class OptionsPanel : OptionsPanelBase
     {
+        public bool Background;
         // Layout constants.
         private const float Margin = 5f;
-        private const float LeftMargin = 24f;
-        private const float GroupMargin = 40f;
-        private const float LabelWidth = 40f;
-        private const float TabHeight = 20f;
-
+        float currentY = Margin;
         public static float TabWidth = 200f;
-        
+
         /// <summary>
         /// Performs on-demand panel setup.
-        /// </summary>
-        protected override void Setup()
+        /// </summary> 
+        /// 
+        
+    protected override void Setup()
         {
-            autoLayout = false;
-            float currentY = Margin;
             m_BackgroundSprite = "UnlockingPanel";
 
             UISprite image2Sprite = this.AddUIComponent<UISprite>();
@@ -43,18 +42,32 @@ namespace POAIDBOX
             image2Sprite.atlas = UITextures.LoadSingleSpriteAtlas("..\\Resources\\bck");
             image2Sprite.spriteName = "normal";
             image2Sprite.zOrder = 1;
+            Background = true;
 
 
-            AutoTabstrip tabStrip = AutoTabstrip.AddTabstrip(this, Margin, currentY, 300f, 1f, out _);
-            new UpdatedTab(tabStrip, 1);
-            new LegacyTab(tabStrip, 2);
-            tabStrip.selectedIndex = 1;
-            tabStrip.selectedIndex = 2;
-         
+            Tabstrip();
+        }
 
 
+        /// <summary>
+        /// Creates the tabstrips.
+        /// </summary>
+        public void Tabstrip()
+        {
+            if (Background)
+            {
+                UITabstrip tabStrip = UITabstrips.AddTabstrip(this, 0f, 0f, OptionsPanelManager<OptionsPanel>.PanelWidth, OptionsPanelManager<OptionsPanel>.PanelHeight, out UITabContainer _);
+                tabStrip.clipChildren = false;
+                UpdatedTab updatedTab = new UpdatedTab(tabStrip, 0);
+                LegacyTab legacyTab = new LegacyTab(tabStrip, 1);
 
-       
+                // Select the first tab.
+                tabStrip.selectedIndex = -1;
+            }
+            else
+            {
+                UnityEngine.Debug.Log("Background is false");
+            }
         }
     }
 }
