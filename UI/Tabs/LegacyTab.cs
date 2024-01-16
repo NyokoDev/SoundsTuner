@@ -49,12 +49,6 @@ namespace POAIDBOX
         {
             MainPanel = UITabstrips.AddTextTab(tabStrip, "Legacy", tabIndex, out UIButton _, autoLayout: true);
             currentY += 31f;
-            // Assuming UIHelperBase is a class, not static
-
-
-
-
-
             soundPackPresetDropDown = UIDropDowns.AddLabelledDropDown(MainPanel, Margin, currentY, "Sound Preset", MainPanel.width);
             if (soundPackPresetDropDown == null)
             {
@@ -62,13 +56,7 @@ namespace POAIDBOX
                 return;
             }
             soundPackPresetDropDown.items = soundPacks;
-            // Assuming dropdown is an instance of your dropdown control
-
             SetSliders(); // Call Sliders function
-
-
-
-
         }
 
 
