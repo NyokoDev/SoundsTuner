@@ -1,7 +1,9 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Policy;
 using System.Text;
 using AmbientSoundsTuner2.CommonShared;
@@ -70,10 +72,20 @@ namespace AmbientSoundsTuner2
             get { return "dev version"; }
         }
 
+        private static SoundsTunerMod instance;
 
-        #region Loading / Unloading
+        // Define the Instance property
+        public static SoundsTunerMod Instance
+        {
+            get { return instance; }
+            internal set { instance = value; }
+        }
 
-        public void Load()
+
+
+    #region Loading / Unloading
+
+    public void Load()
         {
             // We have to properly migrate the outdated XML configuration file
             try
@@ -116,6 +128,36 @@ namespace AmbientSoundsTuner2
             CustomPlayClickSound.Detour();
         }
 
+        /// <summary>
+        /// Redirects saving to Local App Data.
+        /// </summary>
+        public void OnModInitializing()
+        {
+            try
+            {
+                SettingsFilename = Path.Combine(FileUtils.GetStorageFolder(Instance), "AmbientSoundsTuner.yml");
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception
+                Console.WriteLine($"An error occurred while combining file path: {ex.Message}");
+
+                string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+                // Combine the desktop path with the file name
+                SettingsFilename = Path.Combine(ColossalFramework.IO.DataLocation.localApplicationData, "AmbientSoundsTuner.yml");
+                FileDebugger.Debug("[SOUNDSTUNER] Redirected path to Local App Data.");
+
+            }
+
+            this.Load();
+            this.PatchUISounds();
+        }
+
+        /// <summary>
+        /// Validates settings. Creates settings file if it doesn't exist.
+        /// </summary>
+        /// <returns></returns>
         public bool ValidateSettings()
         {
           
@@ -138,6 +180,12 @@ namespace AmbientSoundsTuner2
             return nonExistingPacks.Count == 0;
         }
 
+        /// <summary>
+        /// Validates the sounds.
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <param name="nonExistingPacks"></param>
+        /// <param name="selector"></param>
         public static void ValidateSounds(SerializableDictionary<string, ConfigurationV4.Sound> configuration, HashSet<string> nonExistingPacks, Func<SoundPacksFileV1.SoundPack, SoundPacksFileV1.Audio[]> selector)
         {
             configuration.ForEach(kvp =>

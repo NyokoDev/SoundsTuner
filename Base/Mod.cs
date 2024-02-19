@@ -6,6 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AmbientSoundsTuner2;
+using System.Reflection;
+using System.IO;
 
 namespace POAIDBOX
 {
@@ -14,6 +17,8 @@ namespace POAIDBOX
         {
             
             public override string BaseName => "Sounds Tuner";
+
+
 
             /// <summary>
             /// Gets the mod's unique Harmony identfier.
@@ -25,11 +30,21 @@ namespace POAIDBOX
         /// </summary>
         public string Description => "Customize ambient sounds.";
 
- 
+        public string SettingsFilename;
+
+        public override void OnEnabled()
+        {
+            base.OnEnabled();
+
+        }
+
+
         public override void LoadSettings()
             {
                 // Enable detailed logging.
                 Logging.DetailLogging = true;
+
+
             }
 
         public override void SaveSettings()

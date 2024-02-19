@@ -64,7 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\Aid.cs" />
+    <Compile Include="Base\ConsoleDebugger.cs" />
     <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Configuration\Config.cs" />
     <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Configuration\ConfigMigratorBase.cs" />
     <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CommonShared\Configuration\IConfigMigrator.cs" />

@@ -2,8 +2,14 @@
 using AlgernonCommons.Patching;
 using AlgernonCommons.UI;
 using AmbientSoundsTuner2;
+using AmbientSoundsTuner2.CommonShared;
+using AmbientSoundsTuner2.Detour;
+using AmbientSoundsTuner2.Migration;
 using AmbientSoundsTuner2.SoundPack;
+using AmbientSoundsTuner2.SoundPack.Migration;
+using AmbientSoundsTuner2.Sounds;
 using AmbientSoundsTuner2.UI;
+using ColossalFramework.UI;
 using ICities;
 using System;
 using System.Collections.Generic;
@@ -22,6 +28,8 @@ namespace POAIDBOX
         /// 
         public ColorCorrectionManager colorCorrectionManager;
 
+      
+
         protected override List<AppMode> PermittedModes => new List<AppMode> { AppMode.Game, AppMode.MapEditor, AppMode.AssetEditor, AppMode.ThemeEditor, AppMode.ScenarioEditor };
 
         /// <summary>
@@ -31,20 +39,75 @@ namespace POAIDBOX
         {
             base.OnLevelUnloading();
         }
+        public bool ValidateSettings()
+        {
 
 
+            var nonExistingPacks = new HashSet<string>();
+            ValidateSounds(Mod.Settings.AmbientNightSounds, nonExistingPacks, p => p.AmbientsNight);
+            ValidateSounds(Mod.Settings.AmbientSounds, nonExistingPacks, p => p.Ambients);
+            ValidateSounds(Mod.Settings.AnimalSounds, nonExistingPacks, p => p.Animals);
+            ValidateSounds(Mod.Settings.BuildingSounds, nonExistingPacks, p => p.Buildings);
+            ValidateSounds(Mod.Settings.MiscSounds, nonExistingPacks, p => p.Miscs);
+            ValidateSounds(Mod.Settings.VehicleSounds, nonExistingPacks, p => p.Vehicles);
 
-        SoundPacksManager SoundPacksManager;
-        private UnityEngine.GameObject _gameObject;
-        /// <summary>
+            if (nonExistingPacks.Count > 0)
+            {
+                Mod.Settings.SoundPackPreset = "Custom";
+
+                Mod.Settings.SaveConfig(Mod.SettingsFilename);
+                return false;
+            }
+            return nonExistingPacks.Count == 0;
+        }
+
+
+        public static void ValidateSounds(SerializableDictionary<string, ConfigurationV4.Sound> configuration, HashSet<string> nonExistingPacks, Func<SoundPacksFileV1.SoundPack, SoundPacksFileV1.Audio[]> selector)
+        {
+            configuration.ForEach(kvp =>
+            {
+                var soundName = kvp.Value.SoundPack;
+                if (soundName == null)
+                {
+                    return;
+                }
+                if (SoundPacksManager.instance.SoundPacks.
+                SelectMany(p => selector.Invoke(p.Value)).
+                Any(a => a?.Name == soundName))
+                {
+                    return;
+                }
+
+                kvp.Value.SoundPack = null;
+                nonExistingPacks.Add(soundName);
+            });
+        
+    }
+
+     /// <summary>
         /// Performs any actions upon successful level loading completion.
         /// </summary>
         /// <param name="mode">Loading mode (e.g. game, editor, scenario, etc.).</param>
         protected override void LoadedActions(LoadMode mode)
         {
             base.LoadedActions(mode);
-            UpdatedTab.PopulateDropdown();
-            SoundPacksManager.InitSoundPacks();
+
+
+            // Initialize sounds
+            SoundManager.instance.InitializeSounds();
+
+            // Load sound packs
+            SoundPacksManager.instance.InitSoundPacks();
+
+            //verify config
+            ValidateSettings();
+
+
+            // Detour UI click sounds
+            CustomPlayClickSound.Detour();
+            OptionsPanelManager<OptionsPanel>.OptionsEventHook();
+
+
 
 
 

@@ -11,6 +11,8 @@ using System.Diagnostics;
 using POAIDBOX.Structure;
 using System.Diagnostics.Eventing.Reader;
 using POAIDBOX;
+using AmbientSoundsTuner2.SoundPack;
+using AmbientSoundsTuner2.Sounds;
 
 namespace POAIDBOX
 {
@@ -35,12 +37,12 @@ namespace POAIDBOX
         {
             m_BackgroundSprite = "UnlockingPanel";
             Background = true;
-           
-
-
             Tabstrip();
         }
 
+        readonly UpdatedTab UpdatedTab;
+        readonly SoundPacksManager SoundPacksManager;
+        readonly SoundManager SoundManager;
 
         /// <summary>
         /// Creates the tabstrips.
@@ -56,6 +58,9 @@ namespace POAIDBOX
 
                 // Select the first tab.
                 tabStrip.selectedIndex = -1;
+                UpdatedTab.PopulateDropdown();
+                SoundManager.InitializeSounds();
+                SoundPacksManager.InitSoundPacks();
             }
             else
             {

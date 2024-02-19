@@ -17,7 +17,7 @@ namespace POAIDBOX
 
         float currentY = Margin;
         private const float Margin = 5f;
-        public static string[] soundPacks = new[] { "Default", "Custom" }.Union(SoundPacksManager.instance.SoundPacks.Values.OrderBy(p => p.Name).Select(p => p.Name)).ToArray();
+       
         ModOptionsPanel LegacyPanel;
         public static UIDropDown dropdown;
 
@@ -35,7 +35,7 @@ namespace POAIDBOX
                 return;
             }
 
-            UIPanel panel = UITabstrips.AddTextTab(tabStrip, "Updated", tabIndex, out UIButton _, autoLayout: true);
+            UIPanel panel = UITabstrips.AddTextTab(tabStrip, "Updated", tabIndex, out UIButton _);
             if (panel == null)
             {
                 UnityEngine.Debug.Log("Failed to create panel.");
@@ -45,6 +45,7 @@ namespace POAIDBOX
             panel.autoLayoutDirection = LayoutDirection.Vertical;
 
             dropdown = UIDropDowns.AddLabelledDropDown(panel, Margin, currentY, "Sound Preset", panel.width);
+            currentY += 30f;
             if (dropdown == null)
             {
                 UnityEngine.Debug.Log("Failed to create dropdown.");
@@ -52,7 +53,6 @@ namespace POAIDBOX
             }
 
        
-            dropdown.items = soundPacks;
             // Assuming dropdown is an instance of your dropdown control
      
 
@@ -78,11 +78,9 @@ namespace POAIDBOX
         }
 
        
-        public static void PopulateDropdown()
+        public void PopulateDropdown()
         {
-            {
-                dropdown.selectedValue = Mod.Settings.SoundPackPreset;
-            }
+          
         }
     }
 }
