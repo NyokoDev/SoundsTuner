@@ -1,4 +1,5 @@
-﻿using AlgernonCommons.UI;
+﻿using AlgernonCommons.Translation;
+using AlgernonCommons.UI;
 using AlgernonCommons.XML;
 using AmbientSoundsTuner2;
 using AmbientSoundsTuner2.CommonShared;
@@ -45,6 +46,7 @@ namespace POAIDBOX
         public UISlider uiSlider;
         public UIPanel MainPanel;
         public UIScrollbar Scrollbar;
+        UIScrollablePanel ScrollPanel;
         Mod ModInitializer;
 
         public Dictionary<string, UIDropDown> soundSelections = new Dictionary<string, UIDropDown>();
@@ -59,7 +61,7 @@ namespace POAIDBOX
             ModInitializer = new Mod();
             ModInitializer.OnModInitializing();
 
-            MainPanel = UITabstrips.AddTextTab(tabStrip, "Legacy", tabIndex, out UIButton _);
+            MainPanel = UITabstrips.AddTextTab(tabStrip, Translations., tabIndex, out UIButton _);
 
 
             this.soundPacks = new[] { "Default", "Custom" }.Union(SoundPacksManager.instance.SoundPacks.Values.OrderBy(p => p.Name).Select(p => p.Name)).ToArray();
@@ -74,6 +76,23 @@ namespace POAIDBOX
                 return;
             }
             soundPackPresetDropDown.items = soundPacks;
+
+        
+
+            ScrollPanel = MainPanel.AddUIComponent<UIScrollablePanel>();
+            var scrollPanel = ScrollPanel;
+
+            scrollPanel.relativePosition = new Vector2(0, currentY);
+            scrollPanel.autoSize = false;
+            scrollPanel.autoLayout = false;
+            scrollPanel.width = MainPanel.width;
+            scrollPanel.backgroundSprite = "GenericTab";
+            scrollPanel.height = MainPanel.height + 100000f;
+            scrollPanel.clipChildren = true;
+            scrollPanel.builtinKeyNavigation = true;
+            scrollPanel.scrollWheelDirection = UIOrientation.Vertical;
+            UIScrollbars.AddScrollbar(MainPanel, scrollPanel); // Assuming UIScrollbars is a class or function for adding scrollbars.
+
 
             UnityEngine.Debug.Log("[SOUNDSTUNER] SetSliders() called");
             PopulateTabContainer();
@@ -202,6 +221,7 @@ namespace POAIDBOX
 
 
 
+
             var configuration = Mod.Settings.GetSoundsByCategoryId<string>(sound.CategoryId);
             var customAudioFiles = SoundPacksManager.instance.AudioFiles.Where(kvp => kvp.Key.StartsWith(string.Format("{0}.{1}", sound.CategoryId, sound.Id))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -215,13 +235,14 @@ namespace POAIDBOX
                 volume = sound.DefaultVolume;
             }
 
+           
             // Add UI components to the main panel
-            UISlider uiSlider = mainPanel.AddUIComponent<UISlider>();
+            UISlider uiSlider = ScrollPanel.AddUIComponent<UISlider>();
             currentY += 6f;
             uiSlider.name = "SoundSlider";
            
-            uiSlider.width = 120f;
-            uiSlider.relativePosition = new Vector3(Margin, currentY);
+            uiSlider.width = 200f;
+            uiSlider.relativePosition = new Vector3(200f, currentY);
             uiSlider.minValue = 0;
             uiSlider.maxValue = sound.MaxVolume;
             uiSlider.stepSize = 0.01f;
@@ -236,8 +257,7 @@ namespace POAIDBOX
             sliderSprite.atlas = UITextures.InGameAtlas;
             sliderSprite.spriteName = "BudgetSlider";
             sliderSprite.size = new Vector2(uiSlider.width, 9f);
-
-
+            sliderSprite.relativePosition = new Vector2(0f, 4f);
 
             // Slider thumb.
             UISlicedSprite sliderThumb = uiSlider.AddUIComponent<UISlicedSprite>();
@@ -247,13 +267,12 @@ namespace POAIDBOX
 
 
 
-            UIPanel uiPanel = uiSlider.parent as UIPanel;
-            uiPanel.maximumSize = new Vector2(100000f, 100000f);
-
-
-            UILabel uiLabel = uiPanel.AddUIComponent<UILabel>();
+            UILabel uiLabel = ScrollPanel.AddUIComponent<UILabel>();
+            currentY += 6f;
             uiLabel.text = sound.Name;
             uiLabel.autoSize = true;
+
+        
 
             uiLabel.relativePosition = new Vector3(0, currentY);
             currentY += uiLabel.height;
@@ -273,11 +292,33 @@ namespace POAIDBOX
             if (customAudioFiles.Count > 0)
             {
                 // Setting up the dropdown if custom audio files are present
-                uiDropDown = uiPanel.AddUIComponent<UIDropDown>();
+                uiDropDown = ScrollPanel.AddUIComponent<UIDropDown>();
                 currentY += 6f;
 
+                // Calculate the position relative to the slider
+                float dropdownX = uiSlider.relativePosition.x + uiSlider.width + 20;
+                float dropdownY = currentY; // Keep it aligned with currentY
+
+                // Create dropdown button.
+                UIButton button = uiDropDown.AddUIComponent<UIButton>();
+                uiDropDown.triggerButton = button;
+                button.size = uiDropDown.size;
+                button.text = string.Empty;
+                button.relativePosition = new Vector2(0f, 0f);
+                button.textVerticalAlignment = UIVerticalAlignment.Middle;
+                button.textHorizontalAlignment = UIHorizontalAlignment.Left;
+                button.normalFgSprite = "IconDownArrow";
+                button.hoveredFgSprite = "IconDownArrowHovered";
+                button.pressedFgSprite = "IconDownArrowPressed";
+                button.focusedFgSprite = "IconDownArrowFocused";
+                button.disabledFgSprite = "IconDownArrowDisabled";
+                button.spritePadding = new RectOffset(3, 3, 3, 3);
+                button.foregroundSpriteMode = UIForegroundSpriteMode.Fill;
+                button.horizontalAlignment = UIHorizontalAlignment.Right;
+                button.verticalAlignment = UIVerticalAlignment.Middle;
+                button.zOrder = 0;
+
                 uiDropDown.items = new[] { "Default" }.Union(customAudioFiles.Select(kvp => kvp.Value.Name)).ToArray();
-                uiDropDown.zOrder = 15;
                 uiDropDown.atlas = UITextures.InGameAtlas;
                 uiDropDown.normalBgSprite = "TextFieldPanel";
                 uiDropDown.disabledBgSprite = "TextFieldPanelDisabled";
@@ -311,19 +352,22 @@ namespace POAIDBOX
             }
 
             // Configure UI components
-            uiPanel.autoLayout = false;
-            uiSlider.width = 120f;
+            ScrollPanel.autoLayout = false;
+            uiSlider.width = 150f;
             if (customAudioFiles.Count > 0)
             {
+                // Calculate the position relative to the slider
+                float dropdownX = uiSlider.relativePosition.x + 50f + uiSlider.width + 20;
+                float dropdownY = currentY; // Keep it aligned with currentY
 
-                uiDropDown.width = 80f;
+                uiDropDown.width = 100f;
                 currentY += 6f;
-                uiDropDown.relativePosition = new Vector3(uiSlider.relativePosition.x + uiSlider.width + 20, 0);
-             
+                uiDropDown.relativePosition = new Vector3(dropdownX, dropdownY);
+
             }
             else
             {
-                uiPanel.size = new Vector2(100000f, 100000f);
+               
             }
         }
 
