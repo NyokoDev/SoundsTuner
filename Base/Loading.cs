@@ -3,6 +3,7 @@ using AlgernonCommons.Patching;
 using AlgernonCommons.UI;
 using AmbientSoundsTuner2;
 using AmbientSoundsTuner2.CommonShared;
+using AmbientSoundsTuner2.CommonShared.Utils;
 using AmbientSoundsTuner2.Detour;
 using AmbientSoundsTuner2.Migration;
 using AmbientSoundsTuner2.SoundPack;
@@ -13,6 +14,7 @@ using ColossalFramework.UI;
 using ICities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -93,22 +95,16 @@ namespace POAIDBOX
             base.LoadedActions(mode);
 
 
-            // Initialize sounds
-            SoundManager.instance.InitializeSounds();
+            // Before we patch, we export the current game sounds as an example file
+            var exampleFile = SoundManager.instance.GetCurrentSoundSettingsAsSoundPack();
 
-            // Load sound packs
-            SoundPacksManager.instance.InitSoundPacks();
+        
 
-            //verify config
-            ValidateSettings();
-
-
-            // Detour UI click sounds
-            CustomPlayClickSound.Detour();
-            OptionsPanelManager<OptionsPanel>.OptionsEventHook();
-
-
-
+            exampleFile.SaveConfig(Path.Combine(ColossalFramework.IO.DataLocation.localApplicationData, "Example." + SoundPacksManager.SOUNDPACKS_FILENAME_XML));
+            exampleFile.SaveConfig(Path.Combine(ColossalFramework.IO.DataLocation.localApplicationData, "Example." + SoundPacksManager.SOUNDPACKS_FILENAME_YAML));
+            FileDebugger.Debug("[SOUNDSTUNER] Entered in-game. Patching");
+            SoundsTunerMod.ModInitializer.PatchSounds();
+            FileDebugger.Debug("[SOUNDSTUNER] Entered in-game. Patch completed.");
 
 
         }

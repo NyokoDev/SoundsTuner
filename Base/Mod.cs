@@ -18,12 +18,12 @@ namespace POAIDBOX
             
             public override string BaseName => "Sounds Tuner";
 
+        public static Mod ModInitializer;
 
-
-            /// <summary>
-            /// Gets the mod's unique Harmony identfier.
-            /// </summary>
-            public override string HarmonyID => "com.nyoko.soundstuner.patch";
+        /// <summary>
+        /// Gets the mod's unique Harmony identfier.
+        /// </summary>
+        public override string HarmonyID => "com.nyoko.soundstuner.patch";
 
         /// <summary>
         /// Gets the mod's description for display in the content manager.
@@ -35,6 +35,8 @@ namespace POAIDBOX
         public override void OnEnabled()
         {
             base.OnEnabled();
+            ModInitializer = new Mod();
+            ModInitializer.OnModInitializing();
 
         }
 

@@ -15,6 +15,7 @@ using AmbientSoundsTuner2.UI;
 using ColossalFramework.UI;
 using Epic.OnlineServices;
 using ICities;
+using LuminaTR;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace POAIDBOX
         public float currentY = Margin;
         private const float Margin = 5f;
         OptionsPanel OptionsPanel;
-        public string[] soundPacks;
+        public static string[] soundPacks;
         public bool isChangingSoundPackPreset = false;
 
 
@@ -47,7 +48,7 @@ namespace POAIDBOX
         public UIPanel MainPanel;
         public UIScrollbar Scrollbar;
         UIScrollablePanel ScrollPanel;
-        Mod ModInitializer;
+
 
         public Dictionary<string, UIDropDown> soundSelections = new Dictionary<string, UIDropDown>();
 
@@ -58,16 +59,16 @@ namespace POAIDBOX
         /// <param name="tabIndex"></param>
         internal LegacyTab(UITabstrip tabStrip, int tabIndex)
         {
-            ModInitializer = new Mod();
-            ModInitializer.OnModInitializing();
+         
 
-            MainPanel = UITabstrips.AddTextTab(tabStrip, Translations., tabIndex, out UIButton _);
+            MainPanel = UITabstrips.AddTextTab(tabStrip, Translations.Translate(TranslationID.MAIN_TAB_NAME), tabIndex, out UIButton _);
 
 
-            this.soundPacks = new[] { "Default", "Custom" }.Union(SoundPacksManager.instance.SoundPacks.Values.OrderBy(p => p.Name).Select(p => p.Name)).ToArray();
+            soundPacks = new[] { "Default", "Custom" }.Union(SoundPacksManager.instance.SoundPacks.Values.OrderBy(p => p.Name).Select(p => p.Name)).ToArray();
 
-            soundPackPresetDropDown = UIDropDowns.AddLabelledDropDown(MainPanel, Margin, currentY, "Sound Preset", MainPanel.width);
+            soundPackPresetDropDown = UIDropDowns.AddLabelledDropDown(MainPanel, Margin, currentY, Translations.Translate(TranslationID.SOUND_PRESET), MainPanel.width);
             soundPackPresetDropDown.eventSelectedIndexChanged += (c, value) => SoundPackPresetDropDownSelectionChanged(value);
+            this.soundPackPresetDropDown.selectedValue = Mod.Settings.SoundPackPreset;
 
             currentY += 31f;
             if (soundPackPresetDropDown == null)
@@ -91,7 +92,7 @@ namespace POAIDBOX
             scrollPanel.clipChildren = true;
             scrollPanel.builtinKeyNavigation = true;
             scrollPanel.scrollWheelDirection = UIOrientation.Vertical;
-            UIScrollbars.AddScrollbar(MainPanel, scrollPanel); // Assuming UIScrollbars is a class or function for adding scrollbars.
+            UIScrollbars.AddScrollbar(MainPanel, scrollPanel); /// Adds the scrollbar.
 
 
             UnityEngine.Debug.Log("[SOUNDSTUNER] SetSliders() called");
@@ -159,7 +160,7 @@ namespace POAIDBOX
             else if (value >= 2)
             {
                 // Sound pack
-                string soundPackName = this.soundPacks[value];
+                string soundPackName = soundPacks[value];
                 SoundPacksFileV1.SoundPack soundPack = null;
 
 
@@ -200,6 +201,8 @@ namespace POAIDBOX
                                 dropDown.Value.selectedValue = audio.Name;
                             }
                         }
+                        Mod.Settings.SoundPackPreset = this.soundPackPresetDropDown.selectedValue;
+                        this.isChangingSoundPackPreset = false;
                     }
                 }
             }

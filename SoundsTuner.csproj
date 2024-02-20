@@ -120,6 +120,7 @@
     <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\Sounds\Utils\SoundPatchUtils.cs" />
     <Compile Include="Base\LegacyCode\CSL Ambient Sounds Tuner\UI\ModOptionsPanel.cs" />
     <Compile Include="Base\Loading.cs" />
+    <Compile Include="Translations\TranslationID.cs" />
     <Compile Include="UI\Tabs\GeneralOptions.cs" />
     <Compile Include="Base\Mod.cs" />
     <Compile Include="UI\Tabs\LegacyTab.cs" />
@@ -129,6 +130,10 @@
     <Compile Include="Structure\Mechanism.cs" />
     <Compile Include="Structure\ModUtils.cs" />
   </ItemGroup>
+<Target Name="CopyTranslationsFolder" AfterTargets="Build">
+  <Copy SourceFiles="@(_Translations)" DestinationFolder="$(DeployDir)/Translations" />
+</Target>
+
   <ItemGroup>
     <None Include="Base\LegacyCode\CSL Ambient Sounds Tuner\CSL Ambient Sounds Tuner.csproj" />
     <None Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Debug\CSL Ambient Sounds Tuner.csproj.AssemblyReference.cache" />
@@ -143,6 +148,12 @@
     <None Include="Base\LegacyCode\CSL Ambient Sounds Tuner\obj\Release\DesignTimeResolveAssemblyReferencesInput.cache" />
     <None Include="Base\LegacyCode\CSL Ambient Sounds Tuner\packages.config" />
     <None Include="packages.config" />
+    <None Include="Translations\en-EN.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Translations\es-ES.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Base\LegacyCode\CSL Ambient Sounds Tuner\bin\Debug\Assembly-CSharp-firstpass.dll" />

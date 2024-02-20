@@ -1,9 +1,11 @@
-﻿using AlgernonCommons.UI;
+﻿using AlgernonCommons.Translation;
+using AlgernonCommons.UI;
 using AmbientSoundsTuner2;
 using AmbientSoundsTuner2.SoundPack;
 using AmbientSoundsTuner2.SoundPack.Migration;
 using AmbientSoundsTuner2.UI;
 using ColossalFramework.UI;
+using LuminaTR;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -41,11 +43,21 @@ namespace POAIDBOX
                 UnityEngine.Debug.Log("Failed to create panel.");
                 return;
             }
-
-            panel.autoLayoutDirection = LayoutDirection.Vertical;
-
-            dropdown = UIDropDowns.AddLabelledDropDown(panel, Margin, currentY, "Sound Preset", panel.width);
             currentY += 30f;
+
+          
+
+            UIDropDown languageDropDown = UIDropDowns.AddPlainDropDown(panel, Margin, currentY, Translations.Translate("LANGUAGE_CHOICE"), Translations.LanguageList, Translations.Index);
+            languageDropDown.eventSelectedIndexChanged += (c, index) =>
+            {
+                Translations.Index = index;
+                OptionsPanelManager<OptionsPanel>.LocaleChanged();
+            };
+            currentY += 70f;
+
+            dropdown = UIDropDowns.AddLabelledDropDown(panel, Margin, currentY, Translations.Translate(TranslationID.SOUND_PRESET), panel.width - 100f);
+            dropdown.items = LegacyTab.soundPacks;
+            currentY += 70f;
             if (dropdown == null)
             {
                 UnityEngine.Debug.Log("Failed to create dropdown.");
@@ -57,7 +69,7 @@ namespace POAIDBOX
      
 
 
-            UIButton supportbutton = UIButtons.AddSmallerButton(panel, Margin, currentY, "Support");
+            UIButton supportbutton = UIButtons.AddSmallerButton(panel, Margin, currentY, Translations.Translate(TranslationID.SUPPORT));
             currentY += 30f;
             if (supportbutton == null)
             {
